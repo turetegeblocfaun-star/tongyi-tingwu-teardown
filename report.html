@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>通义听悟证据化拆解：阶段 A 用户旅程</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2933;
+      --muted: #5f6b76;
+      --line: #d9dee5;
+      --soft: #f5f7f9;
+      --paper: #ffffff;
+      --purple: #6655d9;
+      --teal: #147d73;
+      --amber: #9a5b00;
+      --red: #a33a3a;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #fafbfc;
+    }
+    header .inner, main, footer { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    header .inner { padding: 38px 0 30px; }
+    .eyebrow { color: var(--purple); font-weight: 700; margin: 0 0 6px; }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); line-height: 1.18; }
+    h2 { margin: 0 0 14px; font-size: 24px; line-height: 1.3; }
+    h3 { margin: 20px 0 8px; font-size: 18px; }
+    p { margin: 8px 0; }
+    a { color: #4146a8; }
+    main { padding: 22px 0 52px; }
+    section { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    nav { padding: 16px 0 4px; display: flex; gap: 8px 16px; flex-wrap: wrap; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .meta { color: var(--muted); max-width: 900px; }
+    .scope {
+      border-left: 4px solid var(--amber);
+      padding: 12px 16px;
+      background: #fff8e8;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag { display: inline-block; padding: 2px 7px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; white-space: nowrap; }
+    .confirmed { border-color: #8cc9c2; background: #edf9f7; color: #0f665e; }
+    .inferred { border-color: #a8a5de; background: #f1f0fb; color: #5147a5; }
+    .designed { border-color: #e0bc72; background: #fff8e7; color: #865200; }
+    .unknown { border-color: #c7cbd0; background: #f2f3f4; color: #4f5963; }
+    .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .summary-grid article { border-top: 3px solid var(--purple); padding-top: 12px; }
+    .summary-grid article:nth-child(2) { border-color: var(--teal); }
+    .summary-grid article:nth-child(3) { border-color: var(--amber); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+    table { width: 100%; min-width: 820px; border-collapse: collapse; background: white; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: var(--soft); color: #36414b; font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .flow { display: grid; grid-template-columns: 120px repeat(4, minmax(180px, 1fr)); min-width: 900px; }
+    .flow > div { min-height: 116px; padding: 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .flow .head { min-height: auto; background: var(--soft); font-weight: 700; }
+    .flow .lane { font-weight: 700; background: #fafbfc; }
+    .flow .system { color: var(--teal); }
+    .flow .product { color: #5147a5; }
+    .branch-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
+    .branch-list div { border-left: 3px solid var(--line); padding-left: 12px; }
+    .screens { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    figure { margin: 0; }
+    figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+    figcaption { color: var(--muted); font-size: 13px; margin-top: 7px; }
+    .findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .finding { border-top: 1px solid var(--line); padding-top: 12px; }
+    .priority { color: var(--red); font-weight: 700; }
+    code { background: var(--soft); padding: 1px 4px; border-radius: 3px; }
+    footer { color: var(--muted); padding: 24px 0 40px; font-size: 13px; }
+    @media (max-width: 760px) {
+      header .inner, main, footer { width: min(calc(100% - 24px), var(--max)); }
+      .summary-grid, .screens, .findings, .branch-list { grid-template-columns: 1fr; }
+      section { padding: 22px 0; }
+      h1 { font-size: 30px; }
+      h2 { font-size: 21px; }
+    }
+    @media print {
+      body { font-size: 11pt; }
+      nav { display: none; }
+      header .inner, main, footer { width: 100%; }
+      section { break-inside: avoid; }
+      .screens { grid-template-columns: 1fr 1fr; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="inner">
+      <p class="eyebrow">阶段 A · 用户旅程 · v1</p>
+      <h1>通义听悟证据化拆解</h1>
+      <p class="meta">快照：2026-08-19 09:08 CST（UTC+8） · 目标入口：<a href="https://tingwu.aliyun.com/folders/0">tingwu.aliyun.com/folders/0</a> · 视口：1280 × 720</p>
+      <nav aria-label="目录">
+        <a href="#scope">范围与缺口</a><a href="#summary">执行摘要</a><a href="#evidence">证据表</a><a href="#journey">三泳道旅程</a><a href="#branches">分支</a><a href="#experience">体验判断</a><a href="#screens">截图</a><a href="#gate">质量门</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="scope">
+      <h2>1. 查看范围与证据缺口</h2>
+      <div class="scope">
+        <p><span class="tag confirmed">【已确认】</span> 本轮读取了未登录态的“我的记录”、公开首页、公开发现页，以及一条公开播客记录详情。未登录、未上传、未开启实时记录、未播放、未分享、未收藏、未订阅、未购买、未删除。</p>
+        <p><span class="tag unknown">【未知】</span> 私有记录的创建表单、任务队列、处理状态、失败与重试、扣费、编辑、导出、回收站恢复，以及真实用户确认门均不可访问，因此本报告不能代表完整生产旅程。</p>
+        <p><span class="tag unknown">【未知】</span> `ego-browser` 命令与其安装参考在本机不可用，本轮降级使用 Codex 内置浏览器完成同等只读 DOM 与截图取证。该工具仅是外部取证手段，不属于通义听悟产品架构。</p>
+      </div>
+      <div class="legend" aria-label="证据图例">
+        <span class="tag confirmed">【已确认】直接证据</span>
+        <span class="tag inferred">【合理推断】多证据支持</span>
+        <span class="tag designed">【建议设计】改进建议</span>
+        <span class="tag unknown">【未知】证据不足</span>
+      </div>
+    </section>
+
+    <section id="summary">
+      <h2>2. 执行摘要</h2>
+      <div class="summary-grid">
+        <article>
+          <h3>产品主线</h3>
+          <p><span class="tag confirmed">【已确认】</span> Web 首页把入口压缩为实时记录、上传音视频和播客链接转写三类任务；公开详情把播放器、逐字稿和 AI 理解产物放在同一记录对象下。证据：E-J-002、E-J-004。</p>
+        </article>
+        <article>
+          <h3>核心价值</h3>
+          <p><span class="tag inferred">【合理推断】</span> 产品不是单一 ASR 工具，而是“把长音视频变成可定位、可阅读、可复用的知识对象”的工作台：时间戳把媒体、逐字稿和摘要建立可见关联。证据：E-J-003、E-J-004、E-O-001。</p>
+        </article>
+        <article>
+          <h3>最高缺口</h3>
+          <p><span class="tag unknown">【未知】</span> 未获得一条从用户提交到任务完成的真实运行样本，不能确认各 AI 产物是并行还是串行生成、状态如何写回、出错如何恢复，也不能识别真实 Agent 数量或边界。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <h2>3. 阶段 A 证据表</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>阶段</th><th>用户目标</th><th>用户动作</th><th>页面反馈</th><th>系统结果</th><th>问题/阻力</th><th>证据</th></tr></thead>
+          <tbody>
+            <tr><td>入口</td><td>查看自己的记录</td><td>打开指定 URL</td><td>提示“登录后可查看记录内容”并提供“立即登录”</td><td>未展示私有记录</td><td>登录墙阻断后续真实任务取证</td><td>E-J-001 · 【已确认】</td></tr>
+            <tr><td>任务选择</td><td>理解产品可处理什么</td><td>查看公开首页</td><td>展示实时记录、上传音视频、播客链接转写三个入口及价值说明</td><td>无任务创建；仅可见入口</td><td>参数、费用和预期产物未在首屏同时展开</td><td>E-J-002 · 【已确认】</td></tr>
+            <tr><td>内容发现</td><td>先看现成结果</td><td>进入发现页</td><td>可搜索、浏览频道和播客卡片；卡片包含时长、章节时间点与摘要标题</td><td>公开 AI 摘要结果可预览</td><td>卡片摘要准确性无法从列表独立判断</td><td>E-J-003 · 【已确认】</td></tr>
+            <tr><td>结果消费</td><td>快速理解单条长音频</td><td>打开公开记录详情</td><td>播放器与全文概要、章节、发言总结、问答、逐字稿同屏组织</td><td>可见多种 AI 派生产物与发言人时间戳</td><td>未执行编辑、导出、分享；结果可操作性未闭环</td><td>E-J-004 · 【已确认】</td></tr>
+            <tr><td>可信度判断</td><td>判断 AI 结果是否可靠</td><td>浏览详情内容</td><td>页面底部提供 AI 准确性与完整性免责声明</td><td>有风险披露，但没有可见的逐结论溯源或置信度</td><td>免责声明不在首屏；用户可能先消费结论后看到提示</td><td>E-J-005 · 【已确认】；影响为【合理推断】</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="journey">
+      <h2>4. 三泳道用户旅程</h2>
+      <p class="meta">共同时间轴仅覆盖本轮可复核的公开消费链。每一格绑定同一顺序，未把官方 API 说明替代为网页运行证据。</p>
+      <div class="table-wrap">
+        <div class="flow" role="table" aria-label="用户、产品界面、系统结果三泳道">
+          <div class="head">泳道 / 步骤</div><div class="head">T01 进入记录</div><div class="head">T02 识别任务入口</div><div class="head">T03 浏览公开结果</div><div class="head">T04 阅读单条记录</div>
+          <div class="lane">用户</div><div>打开指定“我的记录”URL，希望查看工作区。</div><div>转到首页，理解实时、上传、播客三种任务。</div><div>进入发现页，从已有播客结果判断产品价值。</div><div>打开一条记录，结合音频、章节与逐字稿理解内容。</div>
+          <div class="lane product">产品界面</div><div>显示登录门与侧栏导航。E-J-001</div><div>以三块入口说明输入类型和核心产物。E-J-002</div><div>列表卡片展示标题、时长、章节时间点、来源和分享。E-J-003</div><div>详情页汇聚播放器、智能速览、转文字、简介与免责声明。E-J-004/005</div>
+          <div class="lane system">系统结果</div><div>私有记录不返回给未登录用户。【已确认】</div><div>没有创建任务；仅展示能力入口。【已确认】</div><div>公开记录的结构化摘要已存在，可直接消费。【已确认】</div><div>逐字稿与多种 AI 派生文本共同存在；生成过程【未知】。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="branches">
+      <h2>5. 正常、修改、失败与中断</h2>
+      <div class="branch-list">
+        <div><strong>正常主流程</strong><p><span class="tag confirmed">【已确认】</span> 未登录用户仍可从首页进入发现页，并查看公开记录的 AI 摘要和逐字稿。E-J-002 至 E-J-004。</p></div>
+        <div><strong>登录分支</strong><p><span class="tag confirmed">【已确认】</span> 访问“我的记录”会被登录门拦截。未触发登录，因此登录成功后的返回位置与状态恢复为【未知】。E-J-001。</p></div>
+        <div><strong>修改/纠偏</strong><p><span class="tag unknown">【未知】</span> 未获得用户修改发言人、转写文本、摘要、Prompt 或标题的真实样本；不能判断修改是否触发重新生成或版本保留。</p></div>
+        <div><strong>失败/重试</strong><p><span class="tag unknown">【未知】</span> 未出现上传失败、转写失败、摘要失败、余额不足或安全拦截；重试入口、幂等和重复计费均未验证。</p></div>
+        <div><strong>中断/恢复</strong><p><span class="tag unknown">【未知】</span> 未启动实时记录或异步任务，无法观察暂停、取消、关闭页面后恢复及后台是否继续处理。</p></div>
+        <div><strong>完成/交接</strong><p><span class="tag confirmed">【已确认】</span> 公开详情中已有可读产物；<span class="tag unknown">【未知】</span> 这不证明原任务经历了资产、状态、质量、确认和交接五重完成门。</p></div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2>6. 情绪、痛点与机会</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>观察</th><th>判断</th><th>机会</th><th>证据</th></tr></thead>
+          <tbody>
+            <tr><td>未登录用户在“我的记录”立即遇到登录门</td><td><span class="tag inferred">【合理推断】</span> 对已有明确查看意图的用户是必要权限边界，但对首次评估产品的人会形成体验断点。</td><td><span class="tag designed">【建议设计】</span> 在登录门旁提供一条“查看公开样例”的主路径，并说明登录后保留的对象与隐私边界。</td><td>E-J-001、E-J-003</td></tr>
+            <tr><td>首页三种入口清晰，但未在首屏同时展示参数、预计耗时、费用和产物差异</td><td><span class="tag inferred">【合理推断】</span> 用户知道“能做什么”，仍不容易在提交前形成成本与结果预期。</td><td><span class="tag designed">【建议设计】</span> 入口展开后在同一确认门展示输入限制、预计处理时间、计费项和默认生成模块。</td><td>E-J-002、E-O-002、E-O-003</td></tr>
+            <tr><td>详情页将播放器、章节、总结与逐字稿放在同一记录下</td><td><span class="tag inferred">【合理推断】</span> 时间戳是跨产物的关键定位锚点，降低用户从摘要回到原始语境的成本。</td><td><span class="tag designed">【建议设计】</span> 让每个摘要句或问答结论直接指向一段原始音频与逐字稿，并显示编辑/再生成后的版本。</td><td>E-J-003、E-J-004</td></tr>
+            <tr><td>免责声明位于详情内容之后</td><td><span class="tag inferred">【合理推断】</span> 用户可能先采纳结论，再看到准确性提示；重要决策场景存在过度信任风险。</td><td><span class="tag designed">【建议设计】</span> 在每类 AI 产物标题旁提供固定风险标识、来源覆盖率和可追溯入口。</td><td>E-J-005</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>三个优先体验问题</h3>
+      <div class="findings">
+        <div class="finding"><span class="priority">P1</span><p><strong>提交前预期不完整。</strong> <span class="tag designed">【建议设计】</span> 在任务确认门显式列出默认 AI 模块、可能叠加的计费、预计耗时和输出清单，减少“只想转写却生成多项摘要”的预期偏差。</p></div>
+        <div class="finding"><span class="priority">P1</span><p><strong>AI 结论的局部可验证性不足。</strong> <span class="tag designed">【建议设计】</span> 为摘要、章节、问答逐项绑定时间戳和原文片段，并记录用户修改后的来源版本。</p></div>
+        <div class="finding"><span class="priority">P2</span><p><strong>登录墙与公开样例之间的引导弱。</strong> <span class="tag designed">【建议设计】</span> 把公开样例作为登录前的正式体验分支，并在样例结束处说明登录后可创建、管理和导出的差异。</p></div>
+      </div>
+    </section>
+
+    <section id="screens">
+      <h2>7. 页面证据截图</h2>
+      <div class="screens">
+        <figure><img src="evidence/screenshots/S01-my-records-logged-out.png" alt="未登录态我的记录页面"><figcaption>S01 · 我的记录登录门 · E-J-001</figcaption></figure>
+        <figure><img src="evidence/screenshots/S02-home-public.png" alt="通义听悟公开首页三类任务入口"><figcaption>S02 · 实时记录、上传音视频、播客链接转写 · E-J-002</figcaption></figure>
+        <figure><img src="evidence/screenshots/S03-discover-public.png" alt="公开发现页播客列表与章节预览"><figcaption>S03 · 公开内容发现与章节级预览 · E-J-003</figcaption></figure>
+        <figure><img src="evidence/screenshots/S04-public-record-detail.png" alt="公开记录详情的播放器与智能速览"><figcaption>S04 · 播放器、智能速览与章节时间轴 · E-J-004</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="official">
+      <h2>8. 官方资料补充</h2>
+      <p><span class="tag confirmed">【已确认】</span> 阿里云官方资料将通义听悟描述为建立在语音识别、翻译和说话人分离之上的音视频理解服务，公开能力包括摘要、章节、发言总结、待办、问答、关键词等。<a href="https://help.aliyun.com/zh/tingwu/">E-O-001</a></p>
+      <p><span class="tag confirmed">【已确认】</span> 官方规格说明实时与离线模式、支持格式/语种/时长等限制；这些只证明 API 服务能力，不证明本轮网页任务已使用。<a href="https://help.aliyun.com/zh/tingwu/features">E-O-002</a></p>
+      <p><span class="tag confirmed">【已确认】</span> 官方计费由语音处理、大模型、多模态和翻译构成，多个大模型功能或多个 Prompt 可能叠加计费；当前个人网页入口的实际计费提示未取证。<a href="https://help.aliyun.com/zh/tingwu/billing-overview">E-O-003</a></p>
+      <p><span class="tag confirmed">【已确认】</span> API 自定义 Prompt 会把转写结果作为模型输入，并公开模型选项与输入截断规则；这不等于个人 Web 端已经向用户暴露同一能力。<a href="https://help.aliyun.com/zh/tingwu/custom-prompt">E-O-004</a></p>
+    </section>
+
+    <section id="gate">
+      <h2>9. 阶段 A 质量门与下一步</h2>
+      <p><span class="tag confirmed">【已确认】</span> 已完成未登录公开消费链的时间线、页面/产物交叉核对、证据编号、三泳道图和体验问题。</p>
+      <p><span class="tag unknown">【未知】</span> 私有任务从输入到完成的主流程、修改、失败、中断和恢复仅能保留为缺口，因此阶段 A 对“完整生产旅程”的质量门尚未通过。</p>
+      <p><span class="tag designed">【建议设计】</span> 进入阶段 B 前，至少补充一条可访问的真实记录：创建入口、输入参数、任务状态、最终产物、一次修改或失败样本、费用提示与导出/分享结果。获得这些证据后，才适合识别实际 Agent 职能与 I/O 契约。</p>
+    </section>
+  </main>
+  <footer>
+    证据台账：<a href="evidence/evidence-ledger.md">evidence/evidence-ledger.md</a> · 本报告不包含凭证、Cookie、Token、浏览器配置或私有记录内容。
+  </footer>
+</body>
+</html>
